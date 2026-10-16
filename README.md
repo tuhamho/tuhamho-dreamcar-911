@@ -4,12 +4,12 @@ A cinematic Porsche 911 concept website with scroll-controlled video, chapter se
 
 ## Run locally
 
-Open `index.html` through a local static server. Keep the `assets/` directory beside it.
+Run `bash scripts/build.sh`, then serve the generated `dist/` folder with any static web server. The build script reconstructs the video and music files from ordered binary chunks before copying the site into `dist/`.
 
-The scroll film is `assets/porsche-scroll-film.mp4`. Browsers may require one user interaction before playing audible music.
+## Deploy to Vercel
 
-## Deploy
+Import this repository into Vercel. The included `vercel.json` runs the build script and publishes `dist/` automatically.
 
-This is a static site. Import the repository into Vercel with no build command and the project root as the deployment root.
+Browsers may require one user interaction before playing audible music.
 
 Independent concept project; not affiliated with Porsche AG.

@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090b">
+  <meta name="description" content="TUHAMHO — a cinematic Porsche 911 visual concept.">
+  <title>TUHAMHO — 911 Black</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f1f0ec;
+      --muted: #a7a6a3;
+      --red: #e42d36;
+      --black: #08090b;
+      --line: rgba(255,255,255,.15);
+      --page-gutter: clamp(22px, 5vw, 84px);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--black); }
+    body { margin: 0; color: var(--ink); background: var(--black); font-family: Inter, "Helvetica Neue", Arial, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; font: inherit; }
+    .story { height: 1050vh; height: 1050svh; position: relative; background: #08090b; }
+    .story__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; isolation: isolate; background: #07080b; }
+    .story__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -3; }
+    .story__wash { position: absolute; inset: 0; z-index: -2; pointer-events: none; background: linear-gradient(90deg, rgba(4,5,7,.86) 0%, rgba(4,5,7,.5) 31%, rgba(4,5,7,.02) 72%), linear-gradient(0deg, rgba(4,5,7,.68), transparent 32%, rgba(4,5,7,.26)); }
+    .story__vignette { position: absolute; inset: 0; z-index: -1; pointer-events: none; box-shadow: inset 0 0 18vw rgba(0,0,0,.5); }
+    .topbar { position: absolute; z-index: 5; left: 0; right: 0; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 26px var(--page-gutter); border-bottom: 1px solid rgba(255,255,255,.16); }
+    .wordmark { font-size: 15px; letter-spacing: .28em; font-weight: 750; }
+    .wordmark span { color: var(--red); }
+    .nav { display: flex; align-items: center; gap: clamp(18px, 3.5vw, 56px); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.82); }
+    .nav a { transition: color .2s ease; }
+    .nav a:hover { color: #ff6268; }
+    .nav__index { color: #8c8c8b; margin-right: 8px; }
+    .music-controls { display: flex; align-items: center; gap: 8px; }
+    .track-select { max-width: 228px; border: 1px solid rgba(255,255,255,.34); border-radius: 999px; padding: 10px 30px 10px 13px; background: rgba(8,9,11,.72); color: rgba(255,255,255,.9); cursor: pointer; font: inherit; font-size: 9px; letter-spacing: .04em; }
+    .track-select option { color: #f4f3ef; background: #101114; }
+    .sound-toggle { display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(255,255,255,.34); border-radius: 999px; padding: 10px 14px; background: rgba(8,9,11,.38); color: rgba(255,255,255,.88); cursor: pointer; font: inherit; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; transition: border-color .2s, background .2s; }
+    .sound-toggle:hover, .sound-toggle[aria-pressed="true"] { border-color: rgba(240,75,82,.85); background: rgba(150,20,28,.24); }
+    .sound-toggle__icon { color: #f06469; font-size: 15px; line-height: 1; }
+    .hero-copy { position: absolute; z-index: 2; top: 50%; left: var(--page-gutter); transform: translateY(-48%); width: min(580px, 46vw); height: clamp(350px, 52vh, 460px); }
+    .eyebrow { display: flex; gap: 12px; align-items: center; color: #f06469; font-size: 10px; letter-spacing: .26em; text-transform: uppercase; margin: 0 0 24px; }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--red); }
+    .phase { position: absolute; top: 52px; left: 0; right: 0; opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; pointer-events: none; }
+    .phase.is-active { opacity: 1; transform: translateY(0); }
+    .phase h1 { margin: 0; font-size: clamp(48px, 7.8vw, 112px); line-height: .88; letter-spacing: -.065em; font-weight: 650; text-transform: uppercase; }
+    .phase h1 em { font-style: normal; color: #f2454e; }
+    .phase p { max-width: 335px; color: rgba(242,241,237,.74); font-size: 13px; line-height: 1.7; letter-spacing: .035em; margin: 23px 0 0; }
+    .hero-copy__spacer { position: absolute; top: 52px; left: 0; visibility: hidden; margin: 0; }
+    .hero-cta { position: absolute; left: 0; bottom: 0; display: inline-flex; align-items: center; gap: 14px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #fff; }
+    .hero-cta i { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.48); border-radius: 50%; font-style: normal; transition: background .25s, transform .25s; }
+    .hero-cta:hover i { background: var(--red); border-color: var(--red); transform: translateY(3px); }
+    .story-meta { position: absolute; z-index: 3; right: var(--page-gutter); bottom: 38px; display: flex; gap: 34px; color: rgba(255,255,255,.72); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; }
+    .scroll-cue { position: absolute; z-index: 4; left: var(--page-gutter); bottom: 40px; display: flex; align-items: center; gap: 13px; color: rgba(255,255,255,.76); font-size: 9px; letter-spacing: .23em; text-transform: uppercase; }
+    .scroll-cue__line { display: block; width: 44px; height: 1px; background: rgba(255,255,255,.45); position: relative; overflow: hidden; }
+    .scroll-cue__line::after { content: ""; position: absolute; inset: 0; background: var(--red); transform: translateX(-100%); animation: cue 1.8s ease-in-out infinite; }
+    @keyframes cue { 55%,100% { transform: translateX(100%); } }
+    .scroll-progress { position: absolute; z-index: 5; bottom: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,.14); }
+    .scroll-progress span { display: block; width: 0; height: 100%; background: var(--red); box-shadow: 0 0 12px rgba(228,45,54,.9); }
+    .section { padding: clamp(88px, 12vw, 176px) var(--page-gutter); }
+    .section-kicker { color: #ef5960; font-size: 10px; letter-spacing: .23em; text-transform: uppercase; }
+    .intro { background: #0b0c0e; display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; align-items: center; min-height: 95vh; }
+    .intro__image { position: relative; min-height: 520px; overflow: hidden; background: #111; }
+    .intro__image img { position: absolute; width: 100%; height: 100%; inset: 0; object-fit: cover; }
+    .intro__image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.35), transparent 45%); }
+    .image-label { position: absolute; z-index: 1; bottom: 22px; left: 24px; font-size: 9px; letter-spacing: .18em; color: rgba(255,255,255,.75); text-transform: uppercase; }
+    .intro h2, .manifesto h2 { font-size: clamp(40px, 6.8vw, 94px); line-height: .94; letter-spacing: -.06em; text-transform: uppercase; font-weight: 560; margin: 22px 0 26px; }
+    .intro h2 span { color: #e8464e; }
+    .body-copy { max-width: 430px; color: #aaa9a7; font-size: 14px; line-height: 1.9; }
+    .detail { background: #101114; }
+    .detail__heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 50px; }
+    .detail h2 { max-width: 680px; font-size: clamp(36px, 6vw, 78px); line-height: .95; letter-spacing: -.06em; text-transform: uppercase; font-weight: 560; margin: 18px 0 0; }
+    .detail__heading p { max-width: 300px; color: #9b9b99; font-size: 12px; line-height: 1.7; }
+    .detail-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .detail-card { position: relative; min-height: 470px; overflow: hidden; background: #08090b; }
+    .detail-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.2,1); filter: saturate(.8); }
+    .detail-card:hover img { transform: scale(1.035); }
+    .detail-card::after { content: ""; position: absolute; inset: 30% 0 0; background: linear-gradient(0deg, rgba(3,4,6,.92), transparent); }
+    .detail-card__text { position: absolute; z-index: 1; left: 24px; right: 22px; bottom: 24px; }
+    .detail-card__num { color: #f3535b; font-size: 10px; letter-spacing: .2em; }
+    .detail-card h3 { margin: 10px 0 8px; font-size: 22px; font-weight: 550; text-transform: uppercase; letter-spacing: -.02em; }
+    .detail-card p { margin: 0; max-width: 310px; color: rgba(255,255,255,.7); font-size: 12px; line-height: 1.65; }
+    .exploded { background: #090a0c; }
+    .exploded__heading { display: flex; justify-content: space-between; align-items: end; gap: 36px; margin-bottom: 42px; }
+    .exploded__heading h2 { margin: 16px 0 0; font-size: clamp(40px, 6.8vw, 88px); line-height: .92; letter-spacing: -.06em; text-transform: uppercase; font-weight: 560; }
+    .exploded__heading h2 em { color: #e8464e; font-style: normal; }
+    .exploded__heading p { max-width: 380px; margin: 0; color: #aaa9a7; font-size: 13px; line-height: 1.8; }
+    .exploded-figure { margin: 0; }
+    .exploded-visual { position: relative; width: 100%; aspect-ratio: 1672 / 1024; overflow: hidden; border: 1px solid rgba(255,255,255,.14); background: #0b0c0e; }
+    .exploded-visual > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .exploded-visual::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, rgba(0,0,0,.22), transparent 34%); }
+    .callout-lines { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+    .callout-lines path { fill: none; stroke: rgba(255,255,255,.82); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+    .callout-lines circle { fill: #ed3942; stroke: #fff; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+    .callout { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid rgba(255,255,255,.38); background: rgba(8,9,11,.82); backdrop-filter: blur(8px); color: #fff; font-size: clamp(8px, .78vw, 11px); line-height: 1; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+    .callout::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ed3942; box-shadow: 0 0 10px rgba(237,57,66,.8); }
+    .callout--engine { left: 82%; top: 27%; }
+    .callout--chassis { left: 48%; top: 85%; }
+    .callout--suspension { left: 83%; top: 66%; }
+    .callout--brakes { left: 8%; top: 66%; }
+    .exploded-figure figcaption { display: flex; justify-content: space-between; gap: 24px; padding-top: 14px; color: #777875; font-size: 10px; line-height: 1.6; letter-spacing: .08em; }
+    .exploded-notes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 38px; }
+    .exploded-note { border-top: 1px solid rgba(255,255,255,.17); padding-top: 15px; }
+    .exploded-note h3 { margin: 0 0 8px; color: #f0efeb; font-size: 11px; letter-spacing: .17em; text-transform: uppercase; }
+    .exploded-note p { margin: 0; color: #999996; font-size: 11px; line-height: 1.7; }
+    .manifesto { min-height: 88vh; display: flex; align-items: center; position: relative; overflow: hidden; background: #090a0c; }
+    .manifesto__backdrop { position: absolute; inset: 0; opacity: .36; }
+    .manifesto__backdrop img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+    .manifesto__backdrop::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #090a0c 0%, rgba(9,10,12,.55) 55%, #090a0c 100%), linear-gradient(0deg, #090a0c, transparent 50%); }
+    .manifesto__content { position: relative; z-index: 1; max-width: 760px; }
+    .manifesto h2 { font-size: clamp(50px, 9vw, 128px); }
+    .manifesto h2 span { color: #e8464e; }
+    .signature { font-family: "Brush Script MT", "Segoe Script", cursive; font-size: clamp(32px, 5vw, 58px); color: #ee5159; margin-top: 34px; transform: rotate(-5deg); display: inline-block; }
+    .footer { border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 30px var(--page-gutter); color: #858583; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; }
+    .footer__brand { color: #f0efeb; font-weight: 700; letter-spacing: .25em; }
+    .footer a { color: #f0efeb; }
+    .footer a:hover { color: #f3535b; }
+    @media (max-width: 1100px) {
+      .detail-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .story { height: 1050vh; height: 1050svh; }
+      .story__video { object-fit: cover; object-position: 56% center; }
+      .story__wash { background: linear-gradient(90deg, rgba(4,5,7,.78), rgba(4,5,7,.18) 85%), linear-gradient(0deg, rgba(4,5,7,.8), transparent 44%, rgba(4,5,7,.34)); }
+      .topbar { padding-top: 19px; padding-bottom: 19px; }
+      .wordmark { font-size: 12px; }
+      .nav { display: none; }
+      .music-controls { gap: 6px; }
+      .track-select { width: min(46vw, 205px); padding: 8px 24px 8px 9px; font-size: 8px; }
+      .sound-toggle { gap: 6px; padding: 8px 10px; font-size: 8px; letter-spacing: .1em; }
+      .sound-toggle__icon { font-size: 13px; }
+      .hero-copy { width: 82vw; top: 53%; }
+      .phase h1 { font-size: clamp(48px, 14vw, 78px); }
+      .phase p { font-size: 12px; max-width: 280px; }
+      .story-meta { right: var(--page-gutter); bottom: 20px; gap: 13px; font-size: 7px; }
+      .scroll-cue { bottom: 22px; font-size: 8px; }
+      .intro { grid-template-columns: 1fr; gap: 40px; min-height: auto; }
+      .intro__image { min-height: 62vw; }
+      .detail__heading { align-items: start; flex-direction: column; margin-bottom: 28px; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .detail-card { min-height: 90vw; }
+      .exploded__heading { flex-direction: column; align-items: start; gap: 18px; margin-bottom: 26px; }
+      .exploded-visual { aspect-ratio: 1672 / 1024; }
+      .callout { padding: 7px 8px; gap: 5px; font-size: 7px; letter-spacing: .1em; }
+      .callout::before { width: 5px; height: 5px; }
+      .callout--engine { left: 74%; top: 22%; }
+      .callout--chassis { left: 41%; top: 86%; }
+      .callout--suspension { left: 75%; top: 67%; }
+      .callout--brakes { left: 4%; top: 65%; }
+      .exploded-figure figcaption { flex-direction: column; gap: 5px; }
+      .exploded-notes { grid-template-columns: repeat(2, 1fr); gap: 18px 14px; margin-top: 26px; }
+      .manifesto { min-height: 65vh; }
+      .footer { flex-wrap: wrap; line-height: 1.7; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .scroll-cue__line::after { animation: none; }
+      .detail-card img, .hero-cta i { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="story" id="story" aria-label="Scroll-controlled Porsche film">
+      <div class="story__stage">
+        <video class="story__video" id="carVideo" src="assets/porsche-scroll-film.mp4" muted playsinline preload="auto" fetchpriority="high" poster="assets/porsche-black-hero.png" aria-label="Black Porsche 911 in a red-lit studio"></video>
+        <div class="story__wash"></div>
+        <div class="story__vignette"></div>
+        <header class="topbar">
+          <a class="wordmark" href="#story" aria-label="TUHAMHO home">TUHAMHO<span>.</span></a>
+          <nav class="nav" aria-label="Main navigation">
+            <a href="#story"><span class="nav__index">01</span> The film</a>
+            <a href="#design"><span class="nav__index">02</span> The design</a>
+            <a href="#details"><span class="nav__index">03</span> Details</a>
+            <a href="#exploded"><span class="nav__index">04</span> Exploded view</a>
+          </nav>
+          <div class="music-controls">
+            <select class="track-select" id="trackSelect" aria-label="Choose background music">
+              <option value="assets/my-eyes-travis-scott.mp3" selected>MY EYES — Travis Scott</option>
+              <option value="assets/son-tung-inspiration.mp3">Những câu nói truyền cảm hứng — Sơn Tùng</option>
+              <option value="assets/kaash-paige-love-songs.m4a">Love Songs — Kaash Paige</option>
+              <option value="assets/rihanna-stay.m4a">Stay — Rihanna ft. Mikky Ekko</option>
+            </select>
+            <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true" aria-label="Pause background music"><span class="sound-toggle__icon" aria-hidden="true">♫</span><span id="soundLabel">Sound on</span></button>
+          </div>
+        </header>
+        <audio id="backgroundAudio" src="assets/my-eyes-travis-scott.mp3" autoplay preload="auto"></audio>
+        <div class="hero-copy">
+          <p class="eyebrow">Porsche 911 · visual concept</p>
+          <div class="phase is-active" data-from="0" data-to=".2">
+            <h1>BLACK.<br><em>UNBOUND.</em></h1>
+            <p>A familiar silhouette emerges from shadow and restrained red light.</p>
+          </div>
+          <div class="phase" data-from=".2" data-to=".4">
+            <h1>FORM<br>IN <em>MOTION.</em></h1>
+            <p>A slow orbit reveals the sculpted rear, wheel, and flowing body lines.</p>
+          </div>
+          <div class="phase" data-from=".4" data-to=".6">
+            <h1>ENGINEERED.<br><em>EXPOSED.</em></h1>
+            <p>The outer shell parts to reveal the engine, chassis, suspension, and brakes.</p>
+          </div>
+          <div class="phase" data-from=".6" data-to=".8">
+            <h1>BUILT<br><em>TO RETURN.</em></h1>
+            <p>Every piece returns to place. The black 911 stands complete once more.</p>
+          </div>
+          <div class="phase" data-from=".8" data-to="1.01">
+            <h1>THE CREST.<br><em>IN FOCUS.</em></h1>
+            <p>The final approach ends on the Porsche crest at the nose of the car.</p>
+          </div>
+          <a class="hero-cta" href="#design"><i>↓</i> Explore the design</a>
+          <h1 class="hero-copy__spacer" aria-hidden="true">BLACK.<br>UNBOUND.</h1>
+        </div>
+        <div class="scroll-cue"><span class="scroll-cue__line"></span> Scroll to reveal</div>
+        <div class="story-meta"><span>01 — 05</span><span>Independent concept study</span></div>
+        <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
+      </div>
+    </section>
+
+    <section class="section intro" id="design">
+      <div class="intro__image">
+        <img src="assets/porsche-detail-side.jpg" alt="Black Porsche 911 in profile under red studio lighting" loading="lazy">
+        <span class="image-label">01 / Silhouette study</span>
+      </div>
+      <div>
+        <span class="section-kicker">01 / The design</span>
+        <h2>Quiet form.<br><span>Strong presence.</span></h2>
+        <p class="body-copy">This independent visual concept keeps the 911 silhouette in the foreground. Gloss-black surfaces catch a controlled red glow, while the composition leaves the car room to speak for itself.</p>
+      </div>
+    </section>
+
+    <section class="section detail" id="details">
+      <div class="detail__heading">
+        <div>
+          <span class="section-kicker">03 / Five scenes</span>
+          <h2>One car.<br>Five <span>moments.</span></h2>
+        </div>
+        <p>These five frames follow the scroll-controlled film above: from the first silhouette to the Porsche crest close-up.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <img src="assets/porsche-chapter-01.jpg" alt="The black Porsche 911 emerging under red studio lights" loading="lazy">
+          <div class="detail-card__text"><span class="detail-card__num">01 — EMERGENCE</span><h3>From shadow</h3><p>The black silhouette appears in a restrained red glow.</p></div>
+        </article>
+        <article class="detail-card">
+          <img src="assets/porsche-chapter-02.jpg" alt="Rear view of the black Porsche 911 during its orbit" loading="lazy">
+          <div class="detail-card__text"><span class="detail-card__num">02 — ORBIT</span><h3>Every angle</h3><p>A slow camera move reveals the car’s rear and sculpted lines.</p></div>
+        </article>
+        <article class="detail-card">
+          <img src="assets/porsche-chapter-03.jpg" alt="The Porsche 911 body opened to show its mechanical systems" loading="lazy">
+          <div class="detail-card__text"><span class="detail-card__num">03 — ENGINEERING</span><h3>Beneath the shell</h3><p>The body opens to reveal the car’s inner structure.</p></div>
+        </article>
+        <article class="detail-card">
+          <img src="assets/porsche-chapter-04.jpg" alt="The black Porsche 911 fully reassembled" loading="lazy">
+          <div class="detail-card__text"><span class="detail-card__num">04 — RETURN</span><h3>Back as one</h3><p>Every part settles into the finished silhouette.</p></div>
+        </article>
+        <article class="detail-card">
+          <img src="assets/porsche-chapter-05.jpg" alt="Close-up of the Porsche crest on the front hood" loading="lazy">
+          <div class="detail-card__text"><span class="detail-card__num">05 — CREST</span><h3>The final detail</h3><p>The film closes on the Porsche crest at the nose.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section exploded" id="exploded">
+      <div class="exploded__heading">
+        <div>
+          <span class="section-kicker">04 / Engineering, exposed</span>
+          <h2>Inside the <em>911.</em></h2>
+        </div>
+        <p>The body separates to reveal the key systems beneath the black finish. Scroll through the film above to watch the car open up and return to its finished form.</p>
+      </div>
+      <figure class="exploded-figure">
+        <div class="exploded-visual" role="img" aria-label="Exploded view of a black Porsche 911, with callouts for the engine, chassis, suspension, and brakes">
+          <img src="assets/porsche-exploded-view.webp" alt="Exploded technical-style view of a black Porsche 911 showing its internal systems" loading="lazy">
+          <svg class="callout-lines" viewBox="0 0 1672 1024" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M1400 300 L1320 300 L1260 405"></path><circle cx="1260" cy="405" r="5"></circle>
+            <path d="M850 900 L850 790 L800 610"></path><circle cx="800" cy="610" r="5"></circle>
+            <path d="M1475 690 L1400 690 L1340 565"></path><circle cx="1340" cy="565" r="5"></circle>
+            <path d="M190 690 L335 690 L475 585"></path><circle cx="475" cy="585" r="5"></circle>
+          </svg>
+          <span class="callout callout--engine">Engine</span>
+          <span class="callout callout--chassis">Chassis</span>
+          <span class="callout callout--suspension">Suspension</span>
+          <span class="callout callout--brakes">Brakes</span>
+        </div>
+        <figcaption><span>ENGINE / CHASSIS / SUSPENSION / BRAKES</span><span>Illustrative visual concept · Not a factory service diagram</span></figcaption>
+      </figure>
+      <div class="exploded-notes">
+        <article class="exploded-note"><h3>Engine</h3><p>The rear power unit and transmission are shown within the vehicle’s structure.</p></article>
+        <article class="exploded-note"><h3>Chassis</h3><p>The structural base supports the cabin, running gear, and body panels.</p></article>
+        <article class="exploded-note"><h3>Suspension</h3><p>Springs, dampers, and control arms connect the chassis to the wheels.</p></article>
+        <article class="exploded-note"><h3>Brakes</h3><p>Rotors and calipers sit beside each wheel to slow the car.</p></article>
+      </div>
+    </section>
+
+    <section class="section manifesto">
+      <div class="manifesto__backdrop"><img src="assets/porsche-black-hero.png" alt="" loading="lazy"></div>
+      <div class="manifesto__content">
+        <span class="section-kicker">TUHAMHO · Porsche 911</span>
+        <h2>Less to see.<br><span>More to feel.</span></h2>
+        <p class="body-copy">An independent visual concept made for the ones who notice what the light leaves behind.</p>
+        <span class="signature">𝓽𝓾𝓱𝓪𝓶𝓱𝓸</span>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <span class="footer__brand">TUHAMHO</span>
+    <span>Independent visual concept · Not affiliated with Porsche AG</span>
+    <a href="#story">Back to the film ↑</a>
+  </footer>
+  <script>
+    (function () {
+      var story = document.querySelector(".story");
+      var video = document.getElementById("carVideo");
+      var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+      var progressBar = document.getElementById("progressBar");
+      var ticking = false;
+      var duration = 50;
+      var pendingTarget = null;
+      var audio = document.getElementById("backgroundAudio");
+      var soundToggle = document.getElementById("soundToggle");
+      var soundLabel = document.getElementById("soundLabel");
+      var trackSelect = document.getElementById("trackSelect");
+      var audioStarting = false;
+      var audioRequestId = 0;
+
+      function setSoundState(isOn, message) {
+        soundToggle.setAttribute("aria-pressed", isOn ? "true" : "false");
+        soundToggle.setAttribute("aria-label", isOn ? "Pause background music" : "Play background music");
+        soundLabel.textContent = message || (isOn ? "Sound on" : "Sound off");
+      }
+
+      function startAudio() {
+        if (!audio.paused || audioStarting) return;
+        audioStarting = true;
+        var requestId = ++audioRequestId;
+        setSoundState(false, "Loading…");
+        var request = audio.play();
+        if (request && typeof request.then === "function") {
+          request.then(function () {
+            if (requestId !== audioRequestId) return;
+            audioStarting = false;
+            setSoundState(true, "Sound on");
+          }).catch(function () {
+            if (requestId !== audioRequestId) return;
+            audioStarting = false;
+            setSoundState(false, "Tap for sound");
+          });
+        }
+      }
+
+      soundToggle.addEventListener("click", function () {
+        if (!audio.paused || audioStarting) {
+          audioRequestId++;
+          audioStarting = false;
+          audio.pause();
+          setSoundState(false, "Sound off");
+        } else startAudio();
+      });
+      function loadAndPlayTrack(source) {
+        audioRequestId++;
+        audioStarting = false;
+        audio.pause();
+        audio.src = source;
+        audio.load();
+        startAudio();
+      }
+
+      trackSelect.addEventListener("change", function () {
+        loadAndPlayTrack(trackSelect.value);
+      });
+      audio.addEventListener("ended", function () {
+        var nextIndex = (trackSelect.selectedIndex + 1) % trackSelect.options.length;
+        trackSelect.selectedIndex = nextIndex;
+        loadAndPlayTrack(trackSelect.value);
+      });
+      audio.addEventListener("playing", function () { audioStarting = false; setSoundState(true, "Sound on"); });
+      audio.addEventListener("pause", function () { audioStarting = false; setSoundState(false, "Sound off"); });
+      document.addEventListener("pointerdown", function (event) {
+        if (!event.target.closest("#soundToggle")) startAudio();
+      }, { once: true, capture: true });
+      document.addEventListener("keydown", startAudio, { once: true, capture: true });
+      startAudio();
+
+      function seekTo(target) {
+        // Keep the newest scroll position while a previous seek is still resolving.
+        pendingTarget = target;
+        if (video.readyState < 1 || video.seeking) return;
+        var mediaDuration = Number.isFinite(video.duration) ? video.duration : duration;
+        var targetTime = Math.max(0, Math.min(mediaDuration - 0.04, pendingTarget));
+        if (Math.abs(video.currentTime - targetTime) > 0.04) {
+          try {
+            video.currentTime = targetTime;
+            pendingTarget = null;
+          } catch (e) {}
+        } else {
+          pendingTarget = null;
+        }
+      }
+
+      function update() {
+        var bounds = story.getBoundingClientRect();
+        var total = story.offsetHeight - window.innerHeight;
+        var passed = Math.max(0, Math.min(total, -bounds.top));
+        var progress = total > 0 ? passed / total : 0;
+        var target = Math.max(0, Math.min(duration - 0.04, progress * duration));
+        seekTo(target);
+        progressBar.style.width = (progress * 100).toFixed(2) + "%";
+        phases.forEach(function (phase) {
+          var from = Number(phase.getAttribute("data-from"));
+          var to = Number(phase.getAttribute("data-to"));
+          phase.classList.toggle("is-active", progress >= from && progress < to);
+        });
+        ticking = false;
+      }
+
+      function requestUpdate() {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
+      }
+
+      video.addEventListener("loadedmetadata", requestUpdate);
+      video.addEventListener("seeked", function () {
+        if (pendingTarget !== null) {
+          var target = pendingTarget;
+          pendingTarget = null;
+          seekTo(target);
+        }
+      });
+      video.addEventListener("loadeddata", requestUpdate);
+      video.addEventListener("canplay", requestUpdate);
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) requestUpdate();
+      });
+      video.pause();
+      requestUpdate();
+    })();
+  </script>
+</body>
+</html>
