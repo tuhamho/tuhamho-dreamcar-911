@@ -164,7 +164,7 @@
   <main>
     <section class="story" id="story" aria-label="Scroll-controlled Porsche film">
       <div class="story__stage">
-        <video class="story__video" id="carVideo" src="assets/porsche-scroll-film.mp4" muted playsinline preload="auto" fetchpriority="high" poster="assets/porsche-black-hero.png" aria-label="Black Porsche 911 in a red-lit studio"></video>
+        <video class="story__video" id="carVideo" src="assets/porsche-scroll-film.mp4" muted playsinline preload="auto" webkit-playsinline fetchpriority="high" poster="assets/porsche-black-hero.png" aria-label="Black Porsche 911 in a red-lit studio"></video>
         <div class="story__wash"></div>
         <div class="story__vignette"></div>
         <header class="topbar">
@@ -316,6 +316,8 @@
       var progressBar = document.getElementById("progressBar");
       var ticking = false;
       var duration = 50;
+      var videoPrimed = false;
+      var videoPriming = false;
       var pendingTarget = null;
       var audio = document.getElementById("backgroundAudio");
       var soundToggle = document.getElementById("soundToggle");
@@ -378,9 +380,34 @@
       audio.addEventListener("pause", function () { audioStarting = false; setSoundState(false, "Sound off"); });
       document.addEventListener("pointerdown", function (event) {
         if (!event.target.closest("#soundToggle")) startAudio();
-      }, { once: true, capture: true });
-      document.addEventListener("keydown", startAudio, { once: true, capture: true });
+        primeVideo();
+      }, { capture: true });
+      document.addEventListener("keydown", function () {
+        startAudio();
+        primeVideo();
+      }, { capture: true });
       startAudio();
+
+      function primeVideo() {
+        if (videoPrimed || videoPriming || video.error) return;
+        videoPriming = true;
+        var request = video.play();
+        if (request && typeof request.then === "function") {
+          request.then(function () {
+            video.pause();
+            videoPriming = false;
+            videoPrimed = true;
+            requestUpdate();
+          }).catch(function () {
+            videoPriming = false;
+          });
+        } else {
+          video.pause();
+          videoPriming = false;
+          videoPrimed = true;
+          requestUpdate();
+        }
+      }
 
       function seekTo(target) {
         // Keep the newest scroll position while a previous seek is still resolving.
