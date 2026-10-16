@@ -1,6 +1,6 @@
 # TUHAMHO — 911 Black
 
-A cinematic, scroll-controlled Porsche 911 visual concept. The page pairs a black 911, restrained red studio lighting, a five-part film, and an annotated exploded-view illustration.
+A cinematic, scroll-controlled Porsche 911 visual concept. The page pairs a black 911, restrained red studio lighting, a five-part film, and a newly updated exploded-view illustration with 16 labeled component groups.
 
 **Live website:** [tuhamho-porsche-vercel.vercel.app](https://tuhamho-porsche-vercel.vercel.app/)  
 **Repository:** [tuhamho-dreamcar-911](https://github.com/tuhamho/tuhamho-dreamcar-911)
@@ -21,16 +21,16 @@ The scroll-controlled film moves through emergence, orbit, engineering, reassemb
 ![Gallery of the five film scenes](docs/screenshots/03-five-scenes.jpg)
 
 ### Engineering / exploded view
-The illustrated car separates into major systems, with callouts for the engine, chassis, suspension, and brakes.
+The updated illustration labels 16 component groups, including the hood, headlights, radiators, chassis, cabin, engine, transmission, exhaust, suspension, wheels, brakes, and rear spoiler. Four key systems—engine, chassis, suspension, and brakes—also receive short explanatory notes.
 
-![Exploded view of the Porsche 911 concept with engineering callouts](docs/screenshots/04-exploded-view.jpg)
+![Updated 16-group exploded view of the Porsche 911 concept](docs/screenshots/04-exploded-view.jpg)
 
 ## What’s on the site
 
 - A full-screen film whose playback position follows the page scroll.
 - Five cinematic sequences, from the first silhouette through the final crest close-up.
 - A design section and a gallery describing each moment.
-- An illustrative exploded view with four major system callouts.
+- An illustrative exploded view with 16 labeled component groups and four key system notes.
 - A selectable background-music playlist.
 
 ## Run locally
